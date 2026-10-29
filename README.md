@@ -17,3 +17,10 @@ Python's `math.isqrt` solves this problem, and does so faster. This library exis
 ## Edge cases
 
 The function accepts an `int` or a decimal `str`. Strings are stripped of surrounding whitespace before parsing; embedded whitespace, non-decimal characters, and signs other than a single leading `+` are rejected by Python's own `int` parsing and surface as `ValueError`. Negative values raise `ValueError` regardless of input type. Empty and whitespace-only strings raise `ValueError`. Passing a `float` raises `TypeError`.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
